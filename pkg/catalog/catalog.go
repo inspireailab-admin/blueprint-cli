@@ -1,7 +1,14 @@
-// Package catalog is the CLI-side view of the Inspire Blueprint model catalog.
-// The full curated catalog ships from the web app's data/models.json; this
-// package exposes the slice the CLI needs (id → GGUF URL) using a snapshot
-// that's regenerated at release time via `go generate`.
+// Package catalog is the canonical Inspire Blueprint model catalog —
+// model IDs, architecture fields needed for VRAM sizing, license,
+// capability flags, and the GGUF download metadata that powers
+// `blueprint pull`.
+//
+// The catalog ships as an embedded JSON snapshot. The marketing site
+// at inspireailab.com syncs its own copy down from this package's
+// models.json via the URL
+// https://raw.githubusercontent.com/inspireailab-admin/blueprint/main/pkg/catalog/models.json
+// — kernel is source of truth.
+
 package catalog
 
 import (
@@ -13,25 +20,77 @@ import (
 //go:embed models.json
 var raw []byte
 
-// Model is the trimmed view of the catalog the CLI needs.
-type Model struct {
-	ID          string            `json:"id"`
-	DisplayName string            `json:"displayName"`
-	Family      string            `json:"family"`
-	Params      float64           `json:"params"`
-	TotalParams float64           `json:"totalParams"`
-	License     string            `json:"license"`
-	GgufRepo    string            `json:"ggufRepo,omitempty"`
-	GgufFiles   map[string]string `json:"ggufFiles,omitempty"`
+// Catalog is the full embedded payload: the model list plus the
+// metadata the marketing site surfaces as the "estimates as of" date.
+type Catalog struct {
+	AsOf   string  `json:"asOf"`
+	Note   string  `json:"note"`
+	Models []Model `json:"models"`
 }
 
-// Load parses the embedded catalog. Cheap, call freely.
-func Load() ([]Model, error) {
-	var models []Model
-	if err := json.Unmarshal(raw, &models); err != nil {
-		return nil, fmt.Errorf("parse catalog: %w", err)
+// Model is one entry in the catalog. Field set mirrors the marketing
+// site's TypeScript Model type so the desktop app's React layer can
+// consume it 1:1 over Wails IPC without a translation step.
+type Model struct {
+	ID                string        `json:"id"`
+	DisplayName       string        `json:"displayName"`
+	Family            string        `json:"family"`
+	Params            float64       `json:"params"`
+	TotalParams       float64       `json:"totalParams"`
+	Type              string        `json:"type"`
+	License           string        `json:"license"`
+	Gated             bool          `json:"gated"`
+	MaxContext        int           `json:"maxContext"`
+	IsMoE             bool          `json:"isMoE"`
+	QuantOptions      []string      `json:"quantOptions"`
+	NumLayers         int           `json:"numLayers"`
+	NumKvHeads        int           `json:"numKvHeads"`
+	HiddenSize        int           `json:"hiddenSize"`
+	NumAttentionHeads int           `json:"numAttentionHeads"`
+	Capabilities      Capabilities  `json:"capabilities,omitempty"`
+	PopularityRank    int           `json:"popularityRank,omitempty"`
+	Local             *LocalInstall `json:"local,omitempty"`
+}
+
+// Capabilities flags surface in the planner UI as filterable / scorable
+// attributes. All optional — absent means "not declared," not "no."
+type Capabilities struct {
+	StructuredOutput  bool `json:"structuredOutput,omitempty"`
+	Multilingual      bool `json:"multilingual,omitempty"`
+	LongContextProven bool `json:"longContextProven,omitempty"`
+}
+
+// LocalInstall carries the metadata needed to install this model on
+// the user's machine via the CLI or the desktop app. Models with
+// Available=false are catalog-visible (you can size them) but not
+// installable through Blueprint yet.
+type LocalInstall struct {
+	Available bool              `json:"available"`
+	GgufRepo  string            `json:"ggufRepo,omitempty"`
+	GgufFiles map[string]string `json:"ggufFiles,omitempty"`
+}
+
+// LoadFull parses the embedded catalog including the metadata header.
+// Use this when you need the AsOf / Note fields; LoadModels is enough
+// for the common "give me the slice" case.
+func LoadFull() (Catalog, error) {
+	var c Catalog
+	if err := json.Unmarshal(raw, &c); err != nil {
+		return Catalog{}, fmt.Errorf("parse catalog: %w", err)
 	}
-	return models, nil
+	return c, nil
+}
+
+// Load returns just the slice of models. Kept as the primary entry
+// point because most callers (CLI commands, tests) don't need the
+// metadata. Cheap — call freely; parsing is pure JSON over an
+// embedded byte slice.
+func Load() ([]Model, error) {
+	c, err := LoadFull()
+	if err != nil {
+		return nil, err
+	}
+	return c.Models, nil
 }
 
 // Get returns the model with the given id, or an error if absent.
@@ -48,18 +107,34 @@ func Get(id string) (Model, error) {
 	return Model{}, fmt.Errorf("unknown model %q (run `blueprint pull` with no args to list available)", id)
 }
 
-// DownloadURL builds the HuggingFace resolve URL for the given quant, or
-// returns an error if the model has no GGUF source or the quant isn't
-// published.
+// IsInstallable reports whether the model can be pulled and served
+// today. Uses the same condition as DownloadURL — Local present + a
+// GgufRepo set.
+func (m Model) IsInstallable() bool {
+	return m.Local != nil && m.Local.Available && m.Local.GgufRepo != ""
+}
+
+// QuantFiles returns the map of available GGUF quants → file names,
+// or nil if the model isn't installable.
+func (m Model) QuantFiles() map[string]string {
+	if m.Local == nil {
+		return nil
+	}
+	return m.Local.GgufFiles
+}
+
+// DownloadURL builds the HuggingFace resolve URL for the given quant,
+// or returns an error if the model has no GGUF source or the quant
+// isn't published.
 func (m Model) DownloadURL(quant string) (string, string, error) {
-	if m.GgufRepo == "" || m.GgufFiles == nil {
+	if !m.IsInstallable() {
 		return "", "", fmt.Errorf("model %s isn't available for local install yet", m.ID)
 	}
-	file, ok := m.GgufFiles[quant]
+	file, ok := m.Local.GgufFiles[quant]
 	if !ok {
-		return "", "", fmt.Errorf("model %s has no %s GGUF (available: %v)", m.ID, quant, availableQuants(m.GgufFiles))
+		return "", "", fmt.Errorf("model %s has no %s GGUF (available: %v)", m.ID, quant, availableQuants(m.Local.GgufFiles))
 	}
-	return fmt.Sprintf("https://huggingface.co/%s/resolve/main/%s", m.GgufRepo, file), file, nil
+	return fmt.Sprintf("https://huggingface.co/%s/resolve/main/%s", m.Local.GgufRepo, file), file, nil
 }
 
 func availableQuants(files map[string]string) []string {

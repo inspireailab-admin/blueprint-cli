@@ -86,7 +86,7 @@ func serveModel(id string, opts serveOpts) error {
 	}
 
 	// Find the pulled GGUF on disk
-	fileName, ok := model.GgufFiles[opts.quant]
+	fileName, ok := model.QuantFiles()[opts.quant]
 	if !ok {
 		return fmt.Errorf("model %s has no %s GGUF in our catalog", model.ID, opts.quant)
 	}

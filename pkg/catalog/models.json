@@ -1,179 +1,365 @@
-[
-  {
-    "id": "llama-3.2-3b-instruct",
-    "displayName": "Llama 3.2 3B Instruct",
-    "family": "Llama 3.2",
-    "params": 3,
-    "totalParams": 3,
-    "license": "llama-3.2-community",
-    "ggufRepo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-      "q8": "Llama-3.2-3B-Instruct-Q8_0.gguf",
-      "fp16": "Llama-3.2-3B-Instruct-f16.gguf"
+{
+  "asOf": "2026-06",
+  "note": "Phase 1 curated catalog — every model here has a published GGUF, runs on Blueprint's llama-server runtime, and has been verified against the planner's sizing math. Hand-edit to add or update; keep the `local.available` field honest.",
+  "models": [
+    {
+      "id": "llama-3.2-3b-instruct",
+      "displayName": "Llama 3.2 3B Instruct",
+      "family": "Llama 3.2",
+      "params": 3,
+      "totalParams": 3,
+      "type": "text-generation",
+      "license": "llama-3.2-community",
+      "gated": true,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 28,
+      "numKvHeads": 8,
+      "hiddenSize": 3072,
+      "numAttentionHeads": 24,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 4,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+          "q8": "Llama-3.2-3B-Instruct-Q8_0.gguf",
+          "fp16": "Llama-3.2-3B-Instruct-f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "qwen-2.5-7b-instruct",
+      "displayName": "Qwen 2.5 7B Instruct",
+      "family": "Qwen 2.5",
+      "params": 7,
+      "totalParams": 7,
+      "type": "text-generation",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4", "q3"],
+      "numLayers": 28,
+      "numKvHeads": 4,
+      "hiddenSize": 3584,
+      "numAttentionHeads": 28,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 1,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+        "ggufFiles": {
+          "q3": "Qwen2.5-7B-Instruct-Q3_K_L.gguf",
+          "q4": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+          "q8": "Qwen2.5-7B-Instruct-Q8_0.gguf",
+          "fp16": "Qwen2.5-7B-Instruct-f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-7b",
+      "displayName": "DeepSeek R1 Distill Qwen 7B",
+      "family": "DeepSeek R1 Distill",
+      "params": 7,
+      "totalParams": 7,
+      "type": "reasoning",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 28,
+      "numKvHeads": 4,
+      "hiddenSize": 3584,
+      "numAttentionHeads": 28,
+      "capabilities": { "structuredOutput": true, "longContextProven": true },
+      "popularityRank": 5,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF",
+        "ggufFiles": {
+          "q4": "DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf",
+          "q8": "DeepSeek-R1-Distill-Qwen-7B-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "llama-3.1-8b-instruct",
+      "displayName": "Llama 3.1 8B Instruct",
+      "family": "Llama 3.1",
+      "params": 8,
+      "totalParams": 8,
+      "type": "text-generation",
+      "license": "llama-3.1-community",
+      "gated": true,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 32,
+      "numKvHeads": 8,
+      "hiddenSize": 4096,
+      "numAttentionHeads": 32,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 2,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+          "q8": "Meta-Llama-3.1-8B-Instruct-Q8_0.gguf",
+          "fp16": "Meta-Llama-3.1-8B-Instruct-f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "minicpm-v-2.6",
+      "displayName": "MiniCPM-V 2.6",
+      "family": "MiniCPM-V",
+      "params": 8,
+      "totalParams": 8,
+      "type": "vision-language",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 32768,
+      "isMoE": false,
+      "quantOptions": ["fp16", "q8", "q4"],
+      "numLayers": 28,
+      "numKvHeads": 4,
+      "hiddenSize": 3584,
+      "numAttentionHeads": 28,
+      "capabilities": { "multilingual": true },
+      "popularityRank": 9,
+      "local": {
+        "available": true,
+        "ggufRepo": "openbmb/MiniCPM-V-2_6-gguf",
+        "ggufFiles": {
+          "q4": "ggml-model-Q4_K_M.gguf",
+          "q8": "ggml-model-Q8_0.gguf",
+          "fp16": "ggml-model-f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "qwen-2.5-14b-instruct",
+      "displayName": "Qwen 2.5 14B Instruct",
+      "family": "Qwen 2.5",
+      "params": 14,
+      "totalParams": 14,
+      "type": "text-generation",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 48,
+      "numKvHeads": 8,
+      "hiddenSize": 5120,
+      "numAttentionHeads": 40,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 3,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Qwen2.5-14B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Qwen2.5-14B-Instruct-Q4_K_M.gguf",
+          "q8": "Qwen2.5-14B-Instruct-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "phi-4",
+      "displayName": "Phi-4 (14B)",
+      "family": "Phi-4",
+      "params": 14,
+      "totalParams": 14,
+      "type": "text-generation",
+      "license": "mit",
+      "gated": false,
+      "maxContext": 16384,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 40,
+      "numKvHeads": 10,
+      "hiddenSize": 5120,
+      "numAttentionHeads": 40,
+      "capabilities": { "structuredOutput": true },
+      "popularityRank": 6,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/phi-4-GGUF",
+        "ggufFiles": {
+          "q4": "phi-4-Q4_K_M.gguf",
+          "q8": "phi-4-Q8_0.gguf",
+          "fp16": "phi-4-f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "qwen-2.5-32b-instruct",
+      "displayName": "Qwen 2.5 32B Instruct",
+      "family": "Qwen 2.5",
+      "params": 32,
+      "totalParams": 32,
+      "type": "text-generation",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 64,
+      "numKvHeads": 8,
+      "hiddenSize": 5120,
+      "numAttentionHeads": 40,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 7,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Qwen2.5-32B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Qwen2.5-32B-Instruct-Q4_K_M.gguf",
+          "q8": "Qwen2.5-32B-Instruct-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "qwen-2.5-coder-32b",
+      "displayName": "Qwen 2.5 Coder 32B",
+      "family": "Qwen 2.5 Coder",
+      "params": 32,
+      "totalParams": 32,
+      "type": "code",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 64,
+      "numKvHeads": 8,
+      "hiddenSize": 5120,
+      "numAttentionHeads": 40,
+      "capabilities": { "structuredOutput": true, "longContextProven": true },
+      "popularityRank": 8,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Qwen2.5-Coder-32B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Qwen2.5-Coder-32B-Instruct-Q4_K_M.gguf",
+          "q8": "Qwen2.5-Coder-32B-Instruct-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "deepseek-r1-distill-qwen-32b",
+      "displayName": "DeepSeek R1 Distill Qwen 32B",
+      "family": "DeepSeek R1 Distill",
+      "params": 32,
+      "totalParams": 32,
+      "type": "reasoning",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 64,
+      "numKvHeads": 8,
+      "hiddenSize": 5120,
+      "numAttentionHeads": 40,
+      "capabilities": { "structuredOutput": true, "longContextProven": true },
+      "popularityRank": 10,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF",
+        "ggufFiles": {
+          "q4": "DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf",
+          "q8": "DeepSeek-R1-Distill-Qwen-32B-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "llama-3.3-70b-instruct",
+      "displayName": "Llama 3.3 70B Instruct",
+      "family": "Llama 3.3",
+      "params": 70,
+      "totalParams": 70,
+      "type": "text-generation",
+      "license": "llama-3.3-community",
+      "gated": true,
+      "maxContext": 131072,
+      "isMoE": false,
+      "quantOptions": ["fp16", "fp8", "q8", "q4"],
+      "numLayers": 80,
+      "numKvHeads": 8,
+      "hiddenSize": 8192,
+      "numAttentionHeads": 64,
+      "capabilities": { "structuredOutput": true, "multilingual": true, "longContextProven": true },
+      "popularityRank": 11,
+      "local": {
+        "available": true,
+        "ggufRepo": "bartowski/Llama-3.3-70B-Instruct-GGUF",
+        "ggufFiles": {
+          "q4": "Llama-3.3-70B-Instruct-Q4_K_M.gguf",
+          "q8": "Llama-3.3-70B-Instruct-Q8_0.gguf"
+        }
+      }
+    },
+    {
+      "id": "nomic-embed-text-v1.5",
+      "displayName": "Nomic Embed Text v1.5",
+      "family": "Nomic Embed",
+      "params": 0.137,
+      "totalParams": 0.137,
+      "type": "embedding",
+      "license": "apache-2.0",
+      "gated": false,
+      "maxContext": 8192,
+      "isMoE": false,
+      "quantOptions": ["fp16", "q8", "q4"],
+      "numLayers": 12,
+      "numKvHeads": 12,
+      "hiddenSize": 768,
+      "numAttentionHeads": 12,
+      "capabilities": {},
+      "popularityRank": 12,
+      "local": {
+        "available": true,
+        "ggufRepo": "nomic-ai/nomic-embed-text-v1.5-GGUF",
+        "ggufFiles": {
+          "q4": "nomic-embed-text-v1.5.Q4_K_M.gguf",
+          "q8": "nomic-embed-text-v1.5.Q8_0.gguf",
+          "fp16": "nomic-embed-text-v1.5.f16.gguf"
+        }
+      }
+    },
+    {
+      "id": "bge-reranker-v2-m3",
+      "displayName": "BGE Reranker v2 m3",
+      "family": "BGE Reranker",
+      "params": 0.568,
+      "totalParams": 0.568,
+      "type": "reranker",
+      "license": "mit",
+      "gated": false,
+      "maxContext": 8192,
+      "isMoE": false,
+      "quantOptions": ["fp16", "q8", "q4"],
+      "numLayers": 24,
+      "numKvHeads": 16,
+      "hiddenSize": 1024,
+      "numAttentionHeads": 16,
+      "capabilities": { "multilingual": true },
+      "popularityRank": 13,
+      "local": {
+        "available": true,
+        "ggufRepo": "gpustack/bge-reranker-v2-m3-GGUF",
+        "ggufFiles": {
+          "q4": "bge-reranker-v2-m3-Q4_K_M.gguf",
+          "q8": "bge-reranker-v2-m3-Q8_0.gguf",
+          "fp16": "bge-reranker-v2-m3-f16.gguf"
+        }
+      }
     }
-  },
-  {
-    "id": "qwen-2.5-7b-instruct",
-    "displayName": "Qwen 2.5 7B Instruct",
-    "family": "Qwen 2.5",
-    "params": 7,
-    "totalParams": 7,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
-    "ggufFiles": {
-      "q3": "Qwen2.5-7B-Instruct-Q3_K_L.gguf",
-      "q4": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
-      "q8": "Qwen2.5-7B-Instruct-Q8_0.gguf",
-      "fp16": "Qwen2.5-7B-Instruct-f16.gguf"
-    }
-  },
-  {
-    "id": "deepseek-r1-distill-qwen-7b",
-    "displayName": "DeepSeek R1 Distill Qwen 7B",
-    "family": "DeepSeek R1 Distill",
-    "params": 7,
-    "totalParams": 7,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF",
-    "ggufFiles": {
-      "q4": "DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf",
-      "q8": "DeepSeek-R1-Distill-Qwen-7B-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "llama-3.1-8b-instruct",
-    "displayName": "Llama 3.1 8B Instruct",
-    "family": "Llama 3.1",
-    "params": 8,
-    "totalParams": 8,
-    "license": "llama-3.1-community",
-    "ggufRepo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
-      "q8": "Meta-Llama-3.1-8B-Instruct-Q8_0.gguf",
-      "fp16": "Meta-Llama-3.1-8B-Instruct-f16.gguf"
-    }
-  },
-  {
-    "id": "minicpm-v-2.6",
-    "displayName": "MiniCPM-V 2.6",
-    "family": "MiniCPM-V",
-    "params": 8,
-    "totalParams": 8,
-    "license": "apache-2.0",
-    "ggufRepo": "openbmb/MiniCPM-V-2_6-gguf",
-    "ggufFiles": {
-      "q4": "ggml-model-Q4_K_M.gguf",
-      "q8": "ggml-model-Q8_0.gguf",
-      "fp16": "ggml-model-f16.gguf"
-    }
-  },
-  {
-    "id": "qwen-2.5-14b-instruct",
-    "displayName": "Qwen 2.5 14B Instruct",
-    "family": "Qwen 2.5",
-    "params": 14,
-    "totalParams": 14,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/Qwen2.5-14B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Qwen2.5-14B-Instruct-Q4_K_M.gguf",
-      "q8": "Qwen2.5-14B-Instruct-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "phi-4",
-    "displayName": "Phi-4 (14B)",
-    "family": "Phi-4",
-    "params": 14,
-    "totalParams": 14,
-    "license": "mit",
-    "ggufRepo": "bartowski/phi-4-GGUF",
-    "ggufFiles": {
-      "q4": "phi-4-Q4_K_M.gguf",
-      "q8": "phi-4-Q8_0.gguf",
-      "fp16": "phi-4-f16.gguf"
-    }
-  },
-  {
-    "id": "qwen-2.5-32b-instruct",
-    "displayName": "Qwen 2.5 32B Instruct",
-    "family": "Qwen 2.5",
-    "params": 32,
-    "totalParams": 32,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/Qwen2.5-32B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Qwen2.5-32B-Instruct-Q4_K_M.gguf",
-      "q8": "Qwen2.5-32B-Instruct-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "qwen-2.5-coder-32b",
-    "displayName": "Qwen 2.5 Coder 32B",
-    "family": "Qwen 2.5 Coder",
-    "params": 32,
-    "totalParams": 32,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/Qwen2.5-Coder-32B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Qwen2.5-Coder-32B-Instruct-Q4_K_M.gguf",
-      "q8": "Qwen2.5-Coder-32B-Instruct-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "deepseek-r1-distill-qwen-32b",
-    "displayName": "DeepSeek R1 Distill Qwen 32B",
-    "family": "DeepSeek R1 Distill",
-    "params": 32,
-    "totalParams": 32,
-    "license": "apache-2.0",
-    "ggufRepo": "bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF",
-    "ggufFiles": {
-      "q4": "DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf",
-      "q8": "DeepSeek-R1-Distill-Qwen-32B-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "llama-3.3-70b-instruct",
-    "displayName": "Llama 3.3 70B Instruct",
-    "family": "Llama 3.3",
-    "params": 70,
-    "totalParams": 70,
-    "license": "llama-3.3-community",
-    "ggufRepo": "bartowski/Llama-3.3-70B-Instruct-GGUF",
-    "ggufFiles": {
-      "q4": "Llama-3.3-70B-Instruct-Q4_K_M.gguf",
-      "q8": "Llama-3.3-70B-Instruct-Q8_0.gguf"
-    }
-  },
-  {
-    "id": "nomic-embed-text-v1.5",
-    "displayName": "Nomic Embed Text v1.5",
-    "family": "Nomic Embed",
-    "params": 0.137,
-    "totalParams": 0.137,
-    "license": "apache-2.0",
-    "ggufRepo": "nomic-ai/nomic-embed-text-v1.5-GGUF",
-    "ggufFiles": {
-      "q4": "nomic-embed-text-v1.5.Q4_K_M.gguf",
-      "q8": "nomic-embed-text-v1.5.Q8_0.gguf",
-      "fp16": "nomic-embed-text-v1.5.f16.gguf"
-    }
-  },
-  {
-    "id": "bge-reranker-v2-m3",
-    "displayName": "BGE Reranker v2 m3",
-    "family": "BGE Reranker",
-    "params": 0.568,
-    "totalParams": 0.568,
-    "license": "mit",
-    "ggufRepo": "gpustack/bge-reranker-v2-m3-GGUF",
-    "ggufFiles": {
-      "q4": "bge-reranker-v2-m3-Q4_K_M.gguf",
-      "q8": "bge-reranker-v2-m3-Q8_0.gguf",
-      "fp16": "bge-reranker-v2-m3-f16.gguf"
-    }
-  }
-]
+  ]
+}

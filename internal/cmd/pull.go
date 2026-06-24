@@ -54,8 +54,9 @@ func listModels() error {
 	fmt.Println("Available models (use `blueprint pull <id>`):")
 	fmt.Println()
 	for _, m := range models {
-		quants := make([]string, 0, len(m.GgufFiles))
-		for q := range m.GgufFiles {
+		files := m.QuantFiles()
+		quants := make([]string, 0, len(files))
+		for q := range files {
 			quants = append(quants, q)
 		}
 		sort.Strings(quants)

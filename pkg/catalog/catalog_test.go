@@ -30,19 +30,35 @@ func TestLoad(t *testing.T) {
 		if m.Family == "" {
 			t.Errorf("%s: missing family", m.ID)
 		}
-		if m.GgufRepo == "" {
-			t.Errorf("%s: missing ggufRepo", m.ID)
+		if m.Local == nil {
+			t.Errorf("%s: missing local install metadata", m.ID)
+			continue
 		}
-		if len(m.GgufFiles) == 0 {
-			t.Errorf("%s: no GGUF files declared", m.ID)
+		if m.Local.GgufRepo == "" {
+			t.Errorf("%s: missing local.ggufRepo", m.ID)
 		}
-		for quant, file := range m.GgufFiles {
+		if len(m.Local.GgufFiles) == 0 {
+			t.Errorf("%s: no local.ggufFiles declared", m.ID)
+		}
+		for quant, file := range m.Local.GgufFiles {
 			if file == "" {
 				t.Errorf("%s: empty filename for quant %q", m.ID, quant)
 			}
 			if !strings.HasSuffix(file, ".gguf") {
 				t.Errorf("%s: quant %q file %q doesn't end in .gguf", m.ID, quant, file)
 			}
+		}
+		// Architecture fields needed for VRAM sizing math in the
+		// app and on the marketing site. Catch missing values here
+		// rather than in a surprising NaN result downstream.
+		if m.NumLayers <= 0 {
+			t.Errorf("%s: numLayers must be > 0, got %d", m.ID, m.NumLayers)
+		}
+		if m.HiddenSize <= 0 {
+			t.Errorf("%s: hiddenSize must be > 0, got %d", m.ID, m.HiddenSize)
+		}
+		if m.NumAttentionHeads <= 0 {
+			t.Errorf("%s: numAttentionHeads must be > 0, got %d", m.ID, m.NumAttentionHeads)
 		}
 	}
 }
@@ -90,8 +106,8 @@ func TestDownloadURL(t *testing.T) {
 		if !strings.HasPrefix(url, "https://huggingface.co/") {
 			t.Errorf("url = %q, want https://huggingface.co/ prefix", url)
 		}
-		if !strings.Contains(url, m.GgufRepo) {
-			t.Errorf("url = %q, want it to contain %q", url, m.GgufRepo)
+		if !strings.Contains(url, m.Local.GgufRepo) {
+			t.Errorf("url = %q, want it to contain %q", url, m.Local.GgufRepo)
 		}
 		if !strings.HasSuffix(url, file) {
 			t.Errorf("url = %q, file = %q — url should end with file", url, file)
