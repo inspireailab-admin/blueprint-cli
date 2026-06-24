@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/inspireailab-admin/blueprint/internal/paths"
+	"github.com/inspireailab-admin/blueprint/pkg/paths"
 )
 
 // ErrNotFound means llama-server isn't installed anywhere we can locate.

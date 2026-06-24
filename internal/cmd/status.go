@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/internal/paths"
+	"github.com/inspireailab-admin/blueprint/pkg/paths"
 )
 
 func newStatusCmd() *cobra.Command {

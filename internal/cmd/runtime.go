@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/internal/paths"
-	"github.com/inspireailab-admin/blueprint/internal/runtime"
+	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint/pkg/runtime"
 )
 
 func newRuntimeCmd() *cobra.Command {

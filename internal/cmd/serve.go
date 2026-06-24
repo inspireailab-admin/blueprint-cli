@@ -15,9 +15,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/internal/catalog"
-	"github.com/inspireailab-admin/blueprint/internal/paths"
-	"github.com/inspireailab-admin/blueprint/internal/runtime"
+	"github.com/inspireailab-admin/blueprint/pkg/catalog"
+	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint/pkg/runtime"
 )
 
 // Auth key the web UI uses to reach the local server. The browser sends this

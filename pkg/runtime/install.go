@@ -15,8 +15,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/inspireailab-admin/blueprint/internal/download"
-	"github.com/inspireailab-admin/blueprint/internal/paths"
+	"github.com/inspireailab-admin/blueprint/pkg/download"
+	"github.com/inspireailab-admin/blueprint/pkg/paths"
 )
 
 // llamaCppRepo is the GitHub repo the runtime is fetched from.
