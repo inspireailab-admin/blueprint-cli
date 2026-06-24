@@ -1,0 +1,19 @@
+# Built binaries — distributed via GitHub releases, not the repo
+blueprint
+blueprint.exe
+dist/
+
+# Test output
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

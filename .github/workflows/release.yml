@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Cross-compile and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run tests once before releasing
+        run: go test ./...
+
+      - name: Cross-compile all platforms
+        run: |
+          chmod +x scripts/build-release.sh
+          ./scripts/build-release.sh "${GITHUB_REF_NAME}"
+
+      - name: Verify built binaries
+        run: ls -la dist/
+
+      - name: Create GitHub Release with assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/blueprint-* \
+            --title "Blueprint CLI ${GITHUB_REF_NAME}" \
+            --notes "See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) or the commit history for changes in ${GITHUB_REF_NAME}.
+
+          ## Install
+
+          \`\`\`sh
+          # macOS, Linux
+          curl -sSL https://blueprint.inspireailab.com/install.sh | sh
+
+          # Windows (PowerShell)
+          iwr -useb https://blueprint.inspireailab.com/install.ps1 | iex
+          \`\`\`
+
+          ## Manual download
+
+          Pre-built binaries are attached below for:
+          - macOS (amd64, arm64)
+          - Linux (amd64, arm64)
+          - Windows (amd64, arm64)"

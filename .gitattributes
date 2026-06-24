@@ -1,0 +1,24 @@
+# Enforce LF line endings for code so cross-platform contributors don't
+# break shell scripts or import statements.
+*           text=auto eol=lf
+
+# Binary files — never touch
+*.png       binary
+*.jpg       binary
+*.gguf      binary
+*.zip       binary
+*.tar.gz    binary
+*.tgz       binary
+
+# Source must be LF
+*.go        text eol=lf
+*.mod       text eol=lf
+*.sum       text eol=lf
+*.sh        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+
+# Windows installer stays CRLF (PowerShell convention)
+*.ps1       text eol=crlf

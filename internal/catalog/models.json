@@ -1,0 +1,148 @@
+[
+  {
+    "id": "llama-3.1-8b-instruct",
+    "displayName": "Llama 3.1 8B Instruct",
+    "family": "Llama 3.1",
+    "params": 8,
+    "totalParams": 8,
+    "license": "llama-3.1-community",
+    "ggufRepo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+      "q8": "Meta-Llama-3.1-8B-Instruct-Q8_0.gguf",
+      "fp16": "Meta-Llama-3.1-8B-Instruct-f16.gguf"
+    }
+  },
+  {
+    "id": "llama-3.3-70b-instruct",
+    "displayName": "Llama 3.3 70B Instruct",
+    "family": "Llama 3.3",
+    "params": 70,
+    "totalParams": 70,
+    "license": "llama-3.3-community",
+    "ggufRepo": "bartowski/Llama-3.3-70B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Llama-3.3-70B-Instruct-Q4_K_M.gguf",
+      "q8": "Llama-3.3-70B-Instruct-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "qwen-2.5-7b-instruct",
+    "displayName": "Qwen 2.5 7B Instruct",
+    "family": "Qwen 2.5",
+    "params": 7,
+    "totalParams": 7,
+    "license": "apache-2.0",
+    "ggufRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+    "ggufFiles": {
+      "q3": "Qwen2.5-7B-Instruct-Q3_K_L.gguf",
+      "q4": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+      "q8": "Qwen2.5-7B-Instruct-Q8_0.gguf",
+      "fp16": "Qwen2.5-7B-Instruct-f16.gguf"
+    }
+  },
+  {
+    "id": "qwen-2.5-14b-instruct",
+    "displayName": "Qwen 2.5 14B Instruct",
+    "family": "Qwen 2.5",
+    "params": 14,
+    "totalParams": 14,
+    "license": "apache-2.0",
+    "ggufRepo": "bartowski/Qwen2.5-14B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Qwen2.5-14B-Instruct-Q4_K_M.gguf",
+      "q8": "Qwen2.5-14B-Instruct-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "qwen-2.5-32b-instruct",
+    "displayName": "Qwen 2.5 32B Instruct",
+    "family": "Qwen 2.5",
+    "params": 32,
+    "totalParams": 32,
+    "license": "apache-2.0",
+    "ggufRepo": "bartowski/Qwen2.5-32B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Qwen2.5-32B-Instruct-Q4_K_M.gguf",
+      "q8": "Qwen2.5-32B-Instruct-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "qwen-2.5-72b-instruct",
+    "displayName": "Qwen 2.5 72B Instruct",
+    "family": "Qwen 2.5",
+    "params": 72,
+    "totalParams": 72,
+    "license": "tongyi-qianwen",
+    "ggufRepo": "bartowski/Qwen2.5-72B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Qwen2.5-72B-Instruct-Q4_K_M.gguf"
+    }
+  },
+  {
+    "id": "gemma-2-9b-it",
+    "displayName": "Gemma 2 9B Instruct",
+    "family": "Gemma 2",
+    "params": 9,
+    "totalParams": 9,
+    "license": "gemma-terms",
+    "ggufRepo": "bartowski/gemma-2-9b-it-GGUF",
+    "ggufFiles": {
+      "q4": "gemma-2-9b-it-Q4_K_M.gguf",
+      "q8": "gemma-2-9b-it-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "gemma-2-27b-it",
+    "displayName": "Gemma 2 27B Instruct",
+    "family": "Gemma 2",
+    "params": 27,
+    "totalParams": 27,
+    "license": "gemma-terms",
+    "ggufRepo": "bartowski/gemma-2-27b-it-GGUF",
+    "ggufFiles": {
+      "q4": "gemma-2-27b-it-Q4_K_M.gguf",
+      "q8": "gemma-2-27b-it-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "phi-4",
+    "displayName": "Phi-4 (14B)",
+    "family": "Phi-4",
+    "params": 14,
+    "totalParams": 14,
+    "license": "mit",
+    "ggufRepo": "bartowski/phi-4-GGUF",
+    "ggufFiles": {
+      "q4": "phi-4-Q4_K_M.gguf",
+      "q8": "phi-4-Q8_0.gguf",
+      "fp16": "phi-4-f16.gguf"
+    }
+  },
+  {
+    "id": "mixtral-8x7b-instruct",
+    "displayName": "Mixtral 8x7B Instruct",
+    "family": "Mixtral",
+    "params": 13,
+    "totalParams": 47,
+    "license": "apache-2.0",
+    "ggufRepo": "bartowski/Mixtral-8x7B-Instruct-v0.1-GGUF",
+    "ggufFiles": {
+      "q4": "Mixtral-8x7B-Instruct-v0.1-Q4_K_M.gguf",
+      "q8": "Mixtral-8x7B-Instruct-v0.1-Q8_0.gguf"
+    }
+  },
+  {
+    "id": "qwen-2.5-coder-32b",
+    "displayName": "Qwen 2.5 Coder 32B",
+    "family": "Qwen 2.5 Coder",
+    "params": 32,
+    "totalParams": 32,
+    "license": "apache-2.0",
+    "ggufRepo": "bartowski/Qwen2.5-Coder-32B-Instruct-GGUF",
+    "ggufFiles": {
+      "q4": "Qwen2.5-Coder-32B-Instruct-Q4_K_M.gguf",
+      "q8": "Qwen2.5-Coder-32B-Instruct-Q8_0.gguf"
+    }
+  }
+]
