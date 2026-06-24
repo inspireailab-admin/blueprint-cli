@@ -28,6 +28,7 @@ Free, no telemetry, no account. Made by Inspire AI Lab.`,
 	root.AddCommand(newStatusCmd())
 	root.AddCommand(newStopCmd())
 	root.AddCommand(newRuntimeCmd())
+	root.AddCommand(newDashboardCmd())
 
 	return root
 }
