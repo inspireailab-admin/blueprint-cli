@@ -42,10 +42,30 @@ func InstalledVersion() string {
 	return strings.TrimSpace(string(b))
 }
 
-// Install fetches the latest llama.cpp release from GitHub and extracts the
-// runtime binaries (llama-server + supporting libraries) into ~/.blueprint/bin/.
-// Existing files are overwritten.
+// InstallOptions controls Install behavior. Zero value is the legacy
+// behavior — terminal progress on stderr, terminal log lines.
+type InstallOptions struct {
+	// OnProgress, when set, suppresses the stderr progress bar and
+	// receives streaming download progress instead. Used by the
+	// desktop app to forward bytes to a Wails event.
+	OnProgress download.ProgressFunc
+
+	// OnStage, when set, replaces the human-readable stderr log lines
+	// ("Latest llama.cpp release: bXXX", "Extracting…") with structured
+	// calls. Stages are: "locating", "downloading", "extracting", "done".
+	OnStage func(stage string, detail string)
+}
+
+// Install fetches the latest llama.cpp release from GitHub and extracts
+// the runtime binaries into ~/.blueprint/bin/. Convenience wrapper that
+// uses the default stderr progress; see InstallWithOptions to route
+// progress and stage notices elsewhere.
 func Install(ctx context.Context) error {
+	return InstallWithOptions(ctx, InstallOptions{})
+}
+
+// InstallWithOptions is the explicit-options variant. See InstallOptions.
+func InstallWithOptions(ctx context.Context, opts InstallOptions) error {
 	bin, err := paths.Bin()
 	if err != nil {
 		return err
@@ -54,6 +74,12 @@ func Install(ctx context.Context) error {
 		return err
 	}
 
+	emitStage := opts.OnStage
+	if emitStage == nil {
+		emitStage = func(_, _ string) {}
+	}
+
+	emitStage("locating", "")
 	rel, err := fetchLatestRelease(ctx)
 	if err != nil {
 		return fmt.Errorf("locate llama.cpp release: %w", err)
@@ -64,16 +90,23 @@ func Install(ctx context.Context) error {
 		return err
 	}
 
-	fmt.Printf("Latest llama.cpp release: %s\n", rel.TagName)
-	fmt.Printf("Picked asset: %s (%s)\n\n", asset.Name, humanBytes(asset.Size))
+	if opts.OnStage == nil {
+		fmt.Printf("Latest llama.cpp release: %s\n", rel.TagName)
+		fmt.Printf("Picked asset: %s (%s)\n\n", asset.Name, humanBytes(asset.Size))
+	}
+	emitStage("downloading", fmt.Sprintf("%s (%s)", rel.TagName, asset.Name))
 
 	archivePath := filepath.Join(bin, asset.Name)
-	if err := download.File(ctx, asset.DownloadURL, archivePath); err != nil {
+	if err := download.FileWithOptions(ctx, asset.DownloadURL, archivePath, download.Options{OnProgress: opts.OnProgress}); err != nil {
 		return fmt.Errorf("download asset: %w", err)
 	}
 	defer os.Remove(archivePath)
 
-	fmt.Printf("\nExtracting runtime binaries…\n")
+	if opts.OnStage == nil {
+		fmt.Printf("\nExtracting runtime binaries…\n")
+	}
+	emitStage("extracting", asset.Name)
+
 	count, err := extractRuntime(archivePath, bin)
 	if err != nil {
 		return fmt.Errorf("extract: %w", err)
@@ -83,8 +116,11 @@ func Install(ctx context.Context) error {
 		return fmt.Errorf("record version: %w", err)
 	}
 
-	fmt.Printf("✓ Installed llama.cpp %s (%d files) to %s\n", rel.TagName, count, bin)
-	fmt.Printf("  Run with: blueprint serve <model-id>\n")
+	if opts.OnStage == nil {
+		fmt.Printf("✓ Installed llama.cpp %s (%d files) to %s\n", rel.TagName, count, bin)
+		fmt.Printf("  Run with: blueprint serve <model-id>\n")
+	}
+	emitStage("done", fmt.Sprintf("%s · %d files", rel.TagName, count))
 	return nil
 }
 

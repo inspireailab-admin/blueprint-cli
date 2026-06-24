@@ -13,9 +13,40 @@ import (
 	"time"
 )
 
+// Progress is a snapshot of download state, passed to a progress callback
+// at most a few times per second.
+type Progress struct {
+	BytesDownloaded int64
+	BytesTotal      int64 // 0 means unknown (server didn't send Content-Length)
+	BytesPerSecond  int64
+}
+
+// ProgressFunc is the callback signature for streaming download progress
+// outside of the built-in terminal renderer. Pass via Options.OnProgress
+// to skip the stderr render and route updates wherever you want — e.g.,
+// Wails events from a desktop app.
+type ProgressFunc func(Progress)
+
+// Options controls the behavior of File. Zero-value Options renders a
+// terminal progress bar to stderr (the legacy behavior), exactly as
+// File(ctx, url, dst) does today.
+type Options struct {
+	// OnProgress, when set, suppresses the built-in stderr bar and
+	// receives streaming progress callbacks instead.
+	OnProgress ProgressFunc
+}
+
 // File downloads url to dst, showing progress on stderr. Resumes if a partial
 // .part file exists. Atomic: renames .part → dst on success.
+//
+// Use FileWithOptions for callers that want a progress callback instead of
+// the built-in terminal renderer (the desktop app does this).
 func File(ctx context.Context, url, dst string) error {
+	return FileWithOptions(ctx, url, dst, Options{})
+}
+
+// FileWithOptions is the explicit-options variant of File. See Options.
+func FileWithOptions(ctx context.Context, url, dst string, opts Options) error {
 	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
 		return fmt.Errorf("mkdir parent: %w", err)
 	}
@@ -68,11 +99,12 @@ func File(ctx context.Context, url, dst string) error {
 	defer out.Close()
 
 	pw := &progressWriter{
-		dst:     out,
-		total:   total,
-		written: existing,
-		start:   time.Now(),
-		label:   filepath.Base(dst),
+		dst:        out,
+		total:      total,
+		written:    existing,
+		start:      time.Now(),
+		label:      filepath.Base(dst),
+		onProgress: opts.OnProgress,
 	}
 	if _, err := io.Copy(pw, resp.Body); err != nil {
 		return err
@@ -88,7 +120,9 @@ func File(ctx context.Context, url, dst string) error {
 	return nil
 }
 
-// progressWriter renders a tiny ANSI progress line on stderr. No deps.
+// progressWriter renders a tiny ANSI progress line on stderr by default,
+// or — when onProgress is set — routes progress to that callback instead
+// and stays silent on stderr.
 type progressWriter struct {
 	dst        io.Writer
 	total      int64
@@ -96,6 +130,7 @@ type progressWriter struct {
 	start      time.Time
 	label      string
 	lastRender time.Time
+	onProgress ProgressFunc
 }
 
 func (p *progressWriter) Write(b []byte) (int, error) {
@@ -108,28 +143,43 @@ func (p *progressWriter) Write(b []byte) (int, error) {
 	return n, err
 }
 
-func (p *progressWriter) render() {
+func (p *progressWriter) speed() int64 {
 	elapsed := time.Since(p.start).Seconds()
 	if elapsed <= 0 {
 		elapsed = 0.001
 	}
-	speed := float64(p.written) / elapsed
+	return int64(float64(p.written) / elapsed)
+}
+
+func (p *progressWriter) render() {
+	if p.onProgress != nil {
+		p.onProgress(Progress{
+			BytesDownloaded: p.written,
+			BytesTotal:      p.total,
+			BytesPerSecond:  p.speed(),
+		})
+		return
+	}
+
+	speed := p.speed()
 	if p.total > 0 {
 		pct := float64(p.written) / float64(p.total) * 100
 		bar := makeBar(pct, 30)
-		eta := time.Duration(float64(p.total-p.written)/speed) * time.Second
+		eta := time.Duration(float64(p.total-p.written)/float64(speed)) * time.Second
 		fmt.Fprintf(os.Stderr, "\r%s  %s %5.1f%%  %s / %s  %s/s  ETA %s",
 			p.label, bar, pct, humanBytes(p.written), humanBytes(p.total),
-			humanBytes(int64(speed)), eta.Round(time.Second))
+			humanBytes(speed), eta.Round(time.Second))
 	} else {
 		fmt.Fprintf(os.Stderr, "\r%s  %s  %s/s",
-			p.label, humanBytes(p.written), humanBytes(int64(speed)))
+			p.label, humanBytes(p.written), humanBytes(speed))
 	}
 }
 
 func (p *progressWriter) finish() {
 	p.render()
-	fmt.Fprintln(os.Stderr)
+	if p.onProgress == nil {
+		fmt.Fprintln(os.Stderr)
+	}
 }
 
 func makeBar(pct float64, width int) string {
