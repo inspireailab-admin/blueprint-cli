@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"context"
@@ -15,9 +15,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/pkg/catalog"
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
-	"github.com/inspireailab-admin/blueprint/pkg/runtime"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/catalog"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/runtime"
 )
 
 // Auth key the web UI uses to reach the local server. The browser sends this
@@ -46,7 +46,7 @@ and exposes an OpenAI-compatible API at:
 Stops cleanly on Ctrl-C. The Blueprint web UI knows how to find this
 endpoint and drive a chat session against it.
 
-llama.cpp is not bundled — install it once:
+llama.cpp is not bundled â€” install it once:
 
   blueprint runtime install        (Blueprint-managed, ~/.blueprint/bin/)
   brew install llama.cpp           (macOS, system-wide)
@@ -111,8 +111,8 @@ func serveModel(id string, opts serveOpts) error {
 	fmt.Printf("  model  : %s\n", filepath.Base(modelPath))
 	fmt.Printf("  endpoint: http://127.0.0.1:%d/v1\n", opts.port)
 	fmt.Printf("  api key : %s\n", localAPIKey)
-	fmt.Printf("  ctx size: %d  ·  gpu layers: %d  ·  threads: %d\n\n", opts.ctxSize, opts.nGPU, opts.nThread)
-	fmt.Printf("Ctrl-C to stop. Waiting for ready…\n\n")
+	fmt.Printf("  ctx size: %d  Â·  gpu layers: %d  Â·  threads: %d\n\n", opts.ctxSize, opts.nGPU, opts.nThread)
+	fmt.Printf("Ctrl-C to stop. Waiting for readyâ€¦\n\n")
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
@@ -164,8 +164,8 @@ func buildArgs(modelPath string, opts serveOpts) []string {
 }
 
 // waitForReady polls /health until it returns 200, the timeout fires, or the
-// context is canceled. We don't fail serve when it times out — llama-server
-// can take a while to load big models — we just stop announcing.
+// context is canceled. We don't fail serve when it times out â€” llama-server
+// can take a while to load big models â€” we just stop announcing.
 func waitForReady(ctx context.Context, port int, timeout time.Duration) error {
 	url := fmt.Sprintf("http://127.0.0.1:%d/health", port)
 	deadline := time.Now().Add(timeout)
@@ -183,7 +183,7 @@ func waitForReady(ctx context.Context, port int, timeout time.Duration) error {
 			if err == nil {
 				resp.Body.Close()
 				if resp.StatusCode == http.StatusOK {
-					fmt.Printf("✓ ready at http://127.0.0.1:%d/v1\n\n", port)
+					fmt.Printf("âœ“ ready at http://127.0.0.1:%d/v1\n\n", port)
 					return nil
 				}
 			}

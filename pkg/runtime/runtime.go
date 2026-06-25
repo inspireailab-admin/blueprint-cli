@@ -1,4 +1,4 @@
-// Package runtime locates and (later) installs the llama.cpp `llama-server` binary.
+﻿// Package runtime locates and (later) installs the llama.cpp `llama-server` binary.
 package runtime
 
 import (
@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
 )
 
 // ErrNotFound means llama-server isn't installed anywhere we can locate.

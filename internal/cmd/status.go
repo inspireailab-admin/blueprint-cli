@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
 )
 
 func newStatusCmd() *cobra.Command {

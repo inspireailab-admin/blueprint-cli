@@ -1,4 +1,4 @@
-// blueprint — the Inspire Blueprint CLI. Pulls open LLMs and runs them
+﻿// blueprint â€” the Inspire Blueprint CLI. Pulls open LLMs and runs them
 // locally via llama.cpp. Drives a chat UI on localhost.
 package main
 
@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/inspireailab-admin/blueprint/internal/cmd"
+	"github.com/inspireailab-admin/blueprint-cli/internal/cmd"
 )
 
 func main() {

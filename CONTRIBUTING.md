@@ -1,4 +1,4 @@
-# Contributing to Blueprint
+﻿# Contributing to Blueprint
 
 Thanks for considering a contribution. The two most common contributions are
 **adding a model** to the catalog and **fixing a bug or rough edge in the CLI**.
@@ -7,7 +7,7 @@ Both are welcome.
 ## Adding a model
 
 The catalog at [`internal/catalog/models.json`](internal/catalog/models.json) is
-hand-curated. The bar is "we've verified this model actually works end-to-end" —
+hand-curated. The bar is "we've verified this model actually works end-to-end" â€”
 correct chat template, sane quant variants from a trustworthy GGUF source.
 
 To add a model, open a PR that adds an entry like:
@@ -39,11 +39,11 @@ Field reference:
 | `family` | Used for grouping in the planner UI |
 | `params` | Active parameter count in billions (for MoE, the active count) |
 | `totalParams` | Total parameter count in billions (for MoE, the full count) |
-| `license` | Short license id — see `internal/catalog/catalog.go` for known ids |
+| `license` | Short license id â€” see `internal/catalog/catalog.go` for known ids |
 | `ggufRepo` | HuggingFace repo containing the GGUF quants. Stick to trustworthy sources (bartowski, unsloth, official model orgs). |
-| `ggufFiles` | Map of quant key → filename in that repo. Only list quants you've verified |
+| `ggufFiles` | Map of quant key â†’ filename in that repo. Only list quants you've verified |
 
-### Before opening the PR — verification checklist
+### Before opening the PR â€” verification checklist
 
 We can only support models that actually work. Please confirm:
 
@@ -56,14 +56,14 @@ In the PR description, paste the first prompt + response you got. Sanity check, 
 
 ### Don't add
 
-- **Experimental quants** (IQ3_XXS, IQ2, etc.) — they have wide quality variance. Stick to standard K-quants and FP16.
-- **Random users' GGUF re-quantizations** — quality is unpredictable. Use original-publisher quants or trusted re-quantizers only.
-- **Untested chat models** — if the response is gibberish, the model isn't ready.
+- **Experimental quants** (IQ3_XXS, IQ2, etc.) â€” they have wide quality variance. Stick to standard K-quants and FP16.
+- **Random users' GGUF re-quantizations** â€” quality is unpredictable. Use original-publisher quants or trusted re-quantizers only.
+- **Untested chat models** â€” if the response is gibberish, the model isn't ready.
 
 ## Fixing the CLI
 
 ```sh
-git clone https://github.com/inspireailab-admin/blueprint.git
+git clone https://github.com/inspireailab-admin/blueprint-cli.git
 cd blueprint
 go test ./...
 go build -o blueprint .
@@ -74,7 +74,7 @@ We use Go 1.22+. Standard `go fmt` + `go vet` apply. The CI workflow runs the
 test suite on macOS, Linux, and Windows on every push and PR.
 
 For substantial changes, open an issue first so we can talk about the approach.
-For small fixes, just open a PR — we'll review.
+For small fixes, just open a PR â€” we'll review.
 
 ## Project layout
 

@@ -1,10 +1,10 @@
-# Blueprint
+﻿# Blueprint
 
-[![Test](https://github.com/inspireailab-admin/blueprint/actions/workflows/test.yml/badge.svg)](https://github.com/inspireailab-admin/blueprint/actions/workflows/test.yml)
+[![Test](https://github.com/inspireailab-admin/blueprint-cli/actions/workflows/test.yml/badge.svg)](https://github.com/inspireailab-admin/blueprint-cli/actions/workflows/test.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Go Reference](https://pkg.go.dev/badge/github.com/inspireailab-admin/blueprint.svg)](https://pkg.go.dev/github.com/inspireailab-admin/blueprint)
+[![Go Reference](https://pkg.go.dev/badge/github.com/inspireailab-admin/blueprint-cli.svg)](https://pkg.go.dev/github.com/inspireailab-admin/blueprint-cli)
 
-**Local install for open LLMs.** Pull a model, serve it, chat with it — all on your own hardware. Free, no telemetry, no account.
+**Local install for open LLMs.** Pull a model, serve it, chat with it â€” all on your own hardware. Free, no telemetry, no account.
 
 > Made by [Inspire AI Lab](https://inspireailab.com). Companion to the [Blueprint planner](https://blueprint.inspireailab.com), which sizes the hardware and cost before you commit to a model.
 
@@ -27,9 +27,9 @@ That's it. The model is now running locally with an OpenAI-compatible API.
 
 Blueprint wraps [llama.cpp](https://github.com/ggml-org/llama.cpp) with three concerns the raw binary leaves to you:
 
-- **Curated catalog** — a hand-picked set of open models we've verified work end-to-end: correct chat template, sane quant variants, working GGUF source.
-- **Cross-platform runtime install** — fetches the right llama.cpp release for your OS and CPU architecture into `~/.blueprint/bin/`.
-- **Resumable model downloads** — pulls GGUF weights from HuggingFace with a progress bar and Range-based resume.
+- **Curated catalog** â€” a hand-picked set of open models we've verified work end-to-end: correct chat template, sane quant variants, working GGUF source.
+- **Cross-platform runtime install** â€” fetches the right llama.cpp release for your OS and CPU architecture into `~/.blueprint/bin/`.
+- **Resumable model downloads** â€” pulls GGUF weights from HuggingFace with a progress bar and Range-based resume.
 
 What llama.cpp does, Blueprint does not re-do. We don't ship our own inference engine. We make the existing one easy.
 
@@ -58,14 +58,14 @@ Run `blueprint --help` or `blueprint <command> --help` for the full reference.
 
 ## Supported models
 
-The catalog is curated by hand — see [`internal/catalog/models.json`](internal/catalog/models.json) for the full current list and [CONTRIBUTING.md](CONTRIBUTING.md) for how to add one.
+The catalog is curated by hand â€” see [`internal/catalog/models.json`](internal/catalog/models.json) for the full current list and [CONTRIBUTING.md](CONTRIBUTING.md) for how to add one.
 
 | Family | Sizes | License notes |
 |---|---|---|
 | Llama 3.1 / 3.3 | 8B, 70B | Community licenses; HuggingFace gating |
-| Qwen 2.5 | 7B, 14B, 32B, 72B | Apache 2.0 (≤32B); 72B is non-commercial |
+| Qwen 2.5 | 7B, 14B, 32B, 72B | Apache 2.0 (â‰¤32B); 72B is non-commercial |
 | Qwen 2.5 Coder | 32B | Apache 2.0 |
-| Gemma 2 | 9B, 27B | Gemma Terms — review for commercial use |
+| Gemma 2 | 9B, 27B | Gemma Terms â€” review for commercial use |
 | Phi-4 | 14B | MIT |
 | Mixtral 8x7B | 47B MoE / 13B active | Apache 2.0 |
 
@@ -75,13 +75,13 @@ Run `blueprint pull` with no arguments for the live list including which quants 
 
 ```
 ~/.blueprint/
-├── bin/
-│   ├── llama-server[.exe]      llama.cpp runtime
-│   ├── ggml*.{dll,dylib,so}    runtime libraries
-│   └── VERSION                 installed llama.cpp tag
-└── models/
-    └── <model-id>/
-        └── <file>.gguf         pulled weights
+â”œâ”€â”€ bin/
+â”‚   â”œâ”€â”€ llama-server[.exe]      llama.cpp runtime
+â”‚   â”œâ”€â”€ ggml*.{dll,dylib,so}    runtime libraries
+â”‚   â””â”€â”€ VERSION                 installed llama.cpp tag
+â””â”€â”€ models/
+    â””â”€â”€ <model-id>/
+        â””â”€â”€ <file>.gguf         pulled weights
 ```
 
 Override with `BLUEPRINT_HOME=/some/path`.
@@ -91,7 +91,7 @@ Override with `BLUEPRINT_HOME=/some/path`.
 Requires Go 1.22+.
 
 ```sh
-git clone https://github.com/inspireailab-admin/blueprint.git
+git clone https://github.com/inspireailab-admin/blueprint-cli.git
 cd blueprint
 go build -o blueprint .
 ./blueprint version
@@ -115,13 +115,13 @@ Tagged pushes (`git tag vX.Y.Z && git push --tags`) trigger the release workflow
 
 ## Security
 
-Found a vulnerability? Email **security@inspireailab.com** — please don't open a public issue. See [SECURITY.md](SECURITY.md).
+Found a vulnerability? Email **security@inspireailab.com** â€” please don't open a public issue. See [SECURITY.md](SECURITY.md).
 
 ## Why this exists
 
 Inspire AI Lab is an AI engineering consultancy. Blueprint is one of two free tools we maintain to make it easy to evaluate private AI before talking to us:
 
-- **Blueprint Planner** at [blueprint.inspireailab.com](https://blueprint.inspireailab.com) — pick a model, see the VRAM math, see what the hardware costs on-prem or cloud.
-- **Blueprint CLI** (this repo) — actually run it locally, no infrastructure required.
+- **Blueprint Planner** at [blueprint.inspireailab.com](https://blueprint.inspireailab.com) â€” pick a model, see the VRAM math, see what the hardware costs on-prem or cloud.
+- **Blueprint CLI** (this repo) â€” actually run it locally, no infrastructure required.
 
 If you'd like help getting any of this into production, [book a 30-min consultation](https://inspireailab.com/contact).

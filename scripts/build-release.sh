@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+﻿#!/usr/bin/env sh
 # Cross-compile the Blueprint CLI for all release platforms.
-# Output → cli/dist/blueprint-<os>-<arch>[.exe]
+# Output â†’ cli/dist/blueprint-<os>-<arch>[.exe]
 #
 # Usage:
 #   ./scripts/build-release.sh            # version "dev"
@@ -10,7 +10,7 @@ set -e
 
 VERSION="${1:-dev}"
 OUT="dist"
-LDFLAGS="-s -w -X github.com/inspireailab-admin/blueprint/internal/cmd.Version=${VERSION}"
+LDFLAGS="-s -w -X github.com/inspireailab-admin/blueprint-cli/internal/cmd.Version=${VERSION}"
 
 rm -rf "$OUT"
 mkdir -p "$OUT"
@@ -28,7 +28,7 @@ windows  arm64 .exe
 echo "$targets" | while read -r goos goarch ext; do
   [ -z "$goos" ] && continue
   out="$OUT/blueprint-${goos}-${goarch}${ext}"
-  echo "→ $out"
+  echo "â†’ $out"
   GOOS="$goos" GOARCH="$goarch" CGO_ENABLED=0 \
     go build -trimpath -ldflags "$LDFLAGS" -o "$out" .
 done

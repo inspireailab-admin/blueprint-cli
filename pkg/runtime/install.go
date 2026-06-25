@@ -1,4 +1,4 @@
-package runtime
+﻿package runtime
 
 import (
 	"archive/tar"
@@ -15,8 +15,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/inspireailab-admin/blueprint/pkg/download"
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/download"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
 )
 
 // llamaCppRepo is the GitHub repo the runtime is fetched from.
@@ -43,7 +43,7 @@ func InstalledVersion() string {
 }
 
 // InstallOptions controls Install behavior. Zero value is the legacy
-// behavior — terminal progress on stderr, terminal log lines.
+// behavior â€” terminal progress on stderr, terminal log lines.
 type InstallOptions struct {
 	// OnProgress, when set, suppresses the stderr progress bar and
 	// receives streaming download progress instead. Used by the
@@ -51,7 +51,7 @@ type InstallOptions struct {
 	OnProgress download.ProgressFunc
 
 	// OnStage, when set, replaces the human-readable stderr log lines
-	// ("Latest llama.cpp release: bXXX", "Extracting…") with structured
+	// ("Latest llama.cpp release: bXXX", "Extractingâ€¦") with structured
 	// calls. Stages are: "locating", "downloading", "extracting", "done".
 	OnStage func(stage string, detail string)
 }
@@ -103,7 +103,7 @@ func InstallWithOptions(ctx context.Context, opts InstallOptions) error {
 	defer os.Remove(archivePath)
 
 	if opts.OnStage == nil {
-		fmt.Printf("\nExtracting runtime binaries…\n")
+		fmt.Printf("\nExtracting runtime binariesâ€¦\n")
 	}
 	emitStage("extracting", asset.Name)
 
@@ -117,14 +117,14 @@ func InstallWithOptions(ctx context.Context, opts InstallOptions) error {
 	}
 
 	if opts.OnStage == nil {
-		fmt.Printf("✓ Installed llama.cpp %s (%d files) to %s\n", rel.TagName, count, bin)
+		fmt.Printf("âœ“ Installed llama.cpp %s (%d files) to %s\n", rel.TagName, count, bin)
 		fmt.Printf("  Run with: blueprint serve <model-id>\n")
 	}
-	emitStage("done", fmt.Sprintf("%s · %d files", rel.TagName, count))
+	emitStage("done", fmt.Sprintf("%s Â· %d files", rel.TagName, count))
 	return nil
 }
 
-// ─── GitHub releases ────────────────────────────────────────────────────────
+// â”€â”€â”€ GitHub releases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type ghRelease struct {
 	TagName string    `json:"tag_name"`
@@ -164,7 +164,7 @@ func fetchLatestRelease(ctx context.Context) (*ghRelease, error) {
 	return &rel, nil
 }
 
-// ─── Asset selection ────────────────────────────────────────────────────────
+// â”€â”€â”€ Asset selection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // pickAsset finds the right release archive for the running OS+arch.
 // Thin wrapper around pickAssetFor for the production code path.
@@ -224,7 +224,7 @@ func pickAssetFor(assets []ghAsset, goos, goarch string) (ghAsset, error) {
 		}
 	}
 
-	return ghAsset{}, fmt.Errorf("no release asset matches %s/%s — open an issue, this may be a new release naming pattern", goos, goarch)
+	return ghAsset{}, fmt.Errorf("no release asset matches %s/%s â€” open an issue, this may be a new release naming pattern", goos, goarch)
 }
 
 func isArchive(name string) bool {
@@ -250,7 +250,7 @@ func platformTagFor(goos, goarch string) (string, string) {
 		if goarch == "arm64" {
 			return "ubuntu-arm64", ""
 		}
-		// ubuntu-22-x64 and similar — match on "ubuntu" + "x64"
+		// ubuntu-22-x64 and similar â€” match on "ubuntu" + "x64"
 		return "ubuntu", "x64"
 	case "windows":
 		if goarch == "arm64" {
@@ -263,7 +263,7 @@ func platformTagFor(goos, goarch string) (string, string) {
 
 // hasAccelerator returns true when the asset name encodes a hardware-specific
 // build (CUDA / Vulkan / ROCm / SYCL / OpenCL / OpenVINO). We avoid these on
-// auto-install for now — pinning to the reference CPU build keeps things
+// auto-install for now â€” pinning to the reference CPU build keeps things
 // portable, and on Apple Silicon Metal is built into the CPU asset anyway.
 func hasAccelerator(name string) bool {
 	for _, tag := range []string{
@@ -277,7 +277,7 @@ func hasAccelerator(name string) bool {
 	return false
 }
 
-// ─── Extraction ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Extraction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // extractRuntime dispatches to the right archive format and extracts everything
 // under a `/bin/` directory (or top-level), flattened by basename, into target.
@@ -322,7 +322,7 @@ func extractZip(archivePath, target string) (int, error) {
 		count++
 	}
 	if count == 0 {
-		return 0, fmt.Errorf("zip contained no runtime files — release naming may have changed")
+		return 0, fmt.Errorf("zip contained no runtime files â€” release naming may have changed")
 	}
 	return count, nil
 }
@@ -363,7 +363,7 @@ func extractTarGz(archivePath, target string) (int, error) {
 		count++
 	}
 	if count == 0 {
-		return 0, fmt.Errorf("tarball contained no runtime files — release naming may have changed")
+		return 0, fmt.Errorf("tarball contained no runtime files â€” release naming may have changed")
 	}
 	return count, nil
 }
@@ -374,19 +374,19 @@ func normalizePath(p string) string {
 
 // isRuntimeFile decides whether an archive entry is a runtime artifact we
 // want to extract. The Windows .zip is flat at the root (ggml.dll,
-// llama-server.exe, …); the Mac / Linux tarballs nest things under build/bin/
+// llama-server.exe, â€¦); the Mac / Linux tarballs nest things under build/bin/
 // or bin/. Both shapes need to work.
 func isRuntimeFile(name string) bool {
-	// Block path traversal — defense in depth, archive/zip + archive/tar
+	// Block path traversal â€” defense in depth, archive/zip + archive/tar
 	// already reject ".." in many cases, but be explicit.
 	if strings.Contains(name, "..") {
 		return false
 	}
-	// In a /bin/ segment — Mac / Linux tar.gz layout
+	// In a /bin/ segment â€” Mac / Linux tar.gz layout
 	if strings.Contains(name, "/bin/") || strings.HasPrefix(name, "bin/") {
 		return true
 	}
-	// Top-level (no directories) — Windows zip layout
+	// Top-level (no directories) â€” Windows zip layout
 	if !strings.Contains(name, "/") {
 		return true
 	}
@@ -403,7 +403,7 @@ func writeRuntimeFile(dst string, src io.Reader) error {
 	return err
 }
 
-// humanBytes — small duplicate to avoid pulling internal/download into the
+// humanBytes â€” small duplicate to avoid pulling internal/download into the
 // public API surface of this package.
 func humanBytes(n int64) string {
 	const k = 1024

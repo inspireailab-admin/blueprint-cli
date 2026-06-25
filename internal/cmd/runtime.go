@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
-	"github.com/inspireailab-admin/blueprint/pkg/runtime"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/runtime"
 )
 
 func newRuntimeCmd() *cobra.Command {
@@ -38,7 +38,7 @@ func newRuntimeInstallCmd() *cobra.Command {
 runtime binaries (llama-server + supporting libraries) into
 ~/.blueprint/bin/. Re-running upgrades to the latest version.
 
-This installs the reference CPU build — on Apple Silicon it
+This installs the reference CPU build â€” on Apple Silicon it
 already includes Metal acceleration. Dedicated CUDA / Vulkan
 variants for NVIDIA / AMD GPUs are a flag we'll add next.`,
 		RunE: func(_ *cobra.Command, _ []string) error {

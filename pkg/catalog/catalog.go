@@ -1,4 +1,4 @@
-// Package catalog is the canonical Inspire Blueprint model catalog —
+﻿// Package catalog is the canonical Inspire Blueprint model catalog â€”
 // model IDs, architecture fields needed for VRAM sizing, license,
 // capability flags, and the GGUF download metadata that powers
 // `blueprint pull`.
@@ -6,8 +6,8 @@
 // The catalog ships as an embedded JSON snapshot. The marketing site
 // at inspireailab.com syncs its own copy down from this package's
 // models.json via the URL
-// https://raw.githubusercontent.com/inspireailab-admin/blueprint/main/pkg/catalog/models.json
-// — kernel is source of truth.
+// https://raw.githubusercontent.com/inspireailab-admin/blueprint-cli/main/pkg/catalog/models.json
+// â€” kernel is source of truth.
 
 package catalog
 
@@ -53,7 +53,7 @@ type Model struct {
 }
 
 // Capabilities flags surface in the planner UI as filterable / scorable
-// attributes. All optional — absent means "not declared," not "no."
+// attributes. All optional â€” absent means "not declared," not "no."
 type Capabilities struct {
 	StructuredOutput  bool `json:"structuredOutput,omitempty"`
 	Multilingual      bool `json:"multilingual,omitempty"`
@@ -83,7 +83,7 @@ func LoadFull() (Catalog, error) {
 
 // Load returns just the slice of models. Kept as the primary entry
 // point because most callers (CLI commands, tests) don't need the
-// metadata. Cheap — call freely; parsing is pure JSON over an
+// metadata. Cheap â€” call freely; parsing is pure JSON over an
 // embedded byte slice.
 func Load() ([]Model, error) {
 	c, err := LoadFull()
@@ -108,13 +108,13 @@ func Get(id string) (Model, error) {
 }
 
 // IsInstallable reports whether the model can be pulled and served
-// today. Uses the same condition as DownloadURL — Local present + a
+// today. Uses the same condition as DownloadURL â€” Local present + a
 // GgufRepo set.
 func (m Model) IsInstallable() bool {
 	return m.Local != nil && m.Local.Available && m.Local.GgufRepo != ""
 }
 
-// QuantFiles returns the map of available GGUF quants → file names,
+// QuantFiles returns the map of available GGUF quants â†’ file names,
 // or nil if the model isn't installable.
 func (m Model) QuantFiles() map[string]string {
 	if m.Local == nil {

@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/inspireailab-admin/blueprint/pkg/catalog"
-	"github.com/inspireailab-admin/blueprint/pkg/download"
-	"github.com/inspireailab-admin/blueprint/pkg/paths"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/catalog"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/download"
+	"github.com/inspireailab-admin/blueprint-cli/pkg/paths"
 )
 
 func newPullCmd() *cobra.Command {
@@ -29,7 +29,7 @@ fetches the GGUF for the given quant (default q4) into:
 
   ~/.blueprint/models/<model-id>/<file>.gguf
 
-The download is resumable — if it's interrupted, re-running the same
+The download is resumable â€” if it's interrupted, re-running the same
 command picks up where it left off.`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(_ *cobra.Command, args []string) error {
@@ -60,7 +60,7 @@ func listModels() error {
 			quants = append(quants, q)
 		}
 		sort.Strings(quants)
-		fmt.Printf("  %-32s %s · %sB · %s · quants: %s\n",
+		fmt.Printf("  %-32s %s Â· %sB Â· %s Â· quants: %s\n",
 			m.ID, m.Family, fmtParams(m.Params), m.License, strings.Join(quants, ", "))
 	}
 	fmt.Println()
@@ -83,7 +83,7 @@ func pullModel(id, quant string) error {
 		return err
 	}
 	if _, err := os.Stat(dst); err == nil {
-		fmt.Printf("✓ already on disk: %s\n", dst)
+		fmt.Printf("âœ“ already on disk: %s\n", dst)
 		return nil
 	}
 
@@ -99,7 +99,7 @@ func pullModel(id, quant string) error {
 		return fmt.Errorf("download: %w", err)
 	}
 
-	fmt.Printf("\n✓ %s\n  Run with: blueprint serve %s\n", dst, model.ID)
+	fmt.Printf("\nâœ“ %s\n  Run with: blueprint serve %s\n", dst, model.ID)
 	return nil
 }
 

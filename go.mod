@@ -1,4 +1,4 @@
-module github.com/inspireailab-admin/blueprint
+module github.com/inspireailab-admin/blueprint-cli
 
 go 1.22
 
