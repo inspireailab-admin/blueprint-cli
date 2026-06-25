@@ -1,4 +1,4 @@
-﻿// Package catalog is the canonical Inspire Blueprint model catalog â€”
+// Package catalog is the canonical Inspire Blueprint model catalog â€”
 // model IDs, architecture fields needed for VRAM sizing, license,
 // capability flags, and the GGUF download metadata that powers
 // `blueprint pull`.

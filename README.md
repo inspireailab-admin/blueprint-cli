@@ -1,4 +1,4 @@
-﻿# Blueprint
+# Blueprint
 
 [![Test](https://github.com/inspireailab-admin/blueprint-cli/actions/workflows/test.yml/badge.svg)](https://github.com/inspireailab-admin/blueprint-cli/actions/workflows/test.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

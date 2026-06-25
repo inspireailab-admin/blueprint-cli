@@ -1,4 +1,4 @@
-﻿// blueprint â€” the Inspire Blueprint CLI. Pulls open LLMs and runs them
+// blueprint â€” the Inspire Blueprint CLI. Pulls open LLMs and runs them
 // locally via llama.cpp. Drives a chat UI on localhost.
 package main
 

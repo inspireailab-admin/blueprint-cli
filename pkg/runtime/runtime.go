@@ -1,4 +1,4 @@
-﻿// Package runtime locates and (later) installs the llama.cpp `llama-server` binary.
+// Package runtime locates and (later) installs the llama.cpp `llama-server` binary.
 package runtime
 
 import (

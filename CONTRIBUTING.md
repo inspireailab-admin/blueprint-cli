@@ -1,4 +1,4 @@
-﻿# Contributing to Blueprint
+# Contributing to Blueprint
 
 Thanks for considering a contribution. The two most common contributions are
 **adding a model** to the catalog and **fixing a bug or rough edge in the CLI**.

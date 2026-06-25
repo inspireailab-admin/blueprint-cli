@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env sh
+#!/usr/bin/env sh
 # Cross-compile the Blueprint CLI for all release platforms.
 # Output â†’ cli/dist/blueprint-<os>-<arch>[.exe]
 #
