@@ -390,6 +390,21 @@ func isRuntimeFile(name string) bool {
 	if !strings.Contains(name, "/") {
 		return true
 	}
+	// Match by artifact type so a wrapper directory (the current llama.cpp
+	// Linux tarball nests everything under llama-<tag>/ with no /bin/ segment)
+	// doesn't hide the binaries. Keep the executables + the shared libs they
+	// load; they get flattened into bin/ on write.
+	base := strings.ToLower(filepath.Base(name))
+	switch {
+	case strings.HasSuffix(base, ".dll"), strings.HasSuffix(base, ".dylib"):
+		return true
+	case strings.Contains(base, ".so"): // .so, .so.0, .so.0.0.9934
+		return true
+	case base == "llama-server" || base == "llama-server.exe":
+		return true
+	case strings.HasPrefix(base, "llama-") && !strings.Contains(base, "."):
+		return true // POSIX CLI tools: llama-cli, llama-bench, ...
+	}
 	return false
 }
 
