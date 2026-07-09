@@ -349,18 +349,33 @@ func extractTarGz(archivePath, target string) (int, error) {
 		if err != nil {
 			return count, err
 		}
-		if hdr.Typeflag != tar.TypeReg && hdr.Typeflag != tar.TypeRegA {
-			continue
-		}
 		name := normalizePath(hdr.Name)
 		if !isRuntimeFile(name) {
 			continue
 		}
 		dst := filepath.Join(target, filepath.Base(name))
-		if err := writeRuntimeFile(dst, tr); err != nil {
-			return count, err
+		switch hdr.Typeflag {
+		case tar.TypeReg, tar.TypeRegA:
+			if err := writeRuntimeFile(dst, tr); err != nil {
+				return count, err
+			}
+			count++
+		case tar.TypeSymlink:
+			// The Linux tarball ships SONAME symlinks (libfoo.so.0 ->
+			// libfoo.so.0.0.NNNN) that the dynamic loader needs at runtime.
+			// Without them llama-server fails with "cannot open shared object
+			// file: libllama-common.so.0". Recreate them, flattened so the link
+			// target is resolved against the same bin/ directory.
+			linkTarget := filepath.Base(normalizePath(hdr.Linkname))
+			_ = os.Remove(dst) // idempotent re-extract
+			if err := os.Symlink(linkTarget, dst); err != nil {
+				// Non-fatal: some filesystems (e.g. Windows without symlink
+				// privilege) can't create these; the Windows runtime ships a
+				// flat .dll layout that doesn't need them.
+				continue
+			}
+			count++
 		}
-		count++
 	}
 	if count == 0 {
 		return 0, fmt.Errorf("tarball contained no runtime files â€” release naming may have changed")
